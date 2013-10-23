@@ -8,12 +8,11 @@
 ################################################################################
 
 # Make sure we're running as root
-function running_as_root {
-  if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root."
-    exit 1
-  fi
-}
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root."
+  exit 1
+fi
+
 
 ################################################################################
 # Fetch system data (via Python)
@@ -52,10 +51,10 @@ function linux {
 function debian {
   # Based on https://docs.newrelic.com/docs/server/server-monitor-installation-ubuntu-and-debian
   echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list
-  wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
-  apt-get update
-  apt-get -y install newrelic-sysmond
-  nrsysmond-config --set license_key=$LICENSE
+  wget --quiet -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
+  apt-get -q update
+  apt-get -y -q install newrelic-sysmond
+  nrsysmond-config --set license_key=$LICENSE > /dev/null
   /etc/init.d/newrelic-sysmond start
 }
 
