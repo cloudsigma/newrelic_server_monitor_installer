@@ -50,11 +50,23 @@ function linux {
 ## Debian
 function debian {
   # Based on https://docs.newrelic.com/docs/server/server-monitor-installation-ubuntu-and-debian
+
+  echo "Adding package New Relic repository."
   echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list
+
+  echo "Adding New Relic GPG repository key."
   wget --quiet -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
+
+  echo "Updating apt database."
   apt-get -q update
+
+  echo "Installing package."
   apt-get -y -q install newrelic-sysmond
+
+  echo "Configuring package."
   nrsysmond-config --set license_key=$LICENSE > /dev/null
+
+  echo "Starting service."
   /etc/init.d/newrelic-sysmond start
 }
 
@@ -67,14 +79,20 @@ function ubuntu {
 function centos {
   # Based on https://docs.newrelic.com/docs/server/server-monitor-installation-redhat-and-centos
 
+  echo "Adding New Relic repository (for $ARCH)."
   if [ $ARCH == '32bit' ]; then
     rpm -U --quiet https://yum.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm
   elif [ $ARCH == '64bit' ]; then
     rpm -U --quiet https://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
   fi
 
+  echo "Installing package."
   yum install --quiet -y newrelic-sysmond
+
+  echo "Configuring package."
   nrsysmond-config --set license_key=$LICENSE > /dev/null
+
+  echo "Starting service."
   /etc/init.d/newrelic-sysmond start
 }
 
