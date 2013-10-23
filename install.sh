@@ -68,13 +68,13 @@ function centos {
   # Based on https://docs.newrelic.com/docs/server/server-monitor-installation-redhat-and-centos
 
   if [ $ARCH == '32bit' ]; then
-    rpm -Uvh https://yum.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm
+    rpm -U --quiet https://yum.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm
   elif [ $ARCH == '64bit' ]; then
-    rpm -Uvh https://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
+    rpm -U --quiet https://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
   fi
 
-  yum install -y newrelic-sysmond
-  nrsysmond-config --set license_key=$LICENSE
+  yum install --quiet -y newrelic-sysmond
+  nrsysmond-config --set license_key=$LICENSE > /dev/null
   /etc/init.d/newrelic-sysmond start
 }
 
