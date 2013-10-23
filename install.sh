@@ -87,7 +87,7 @@ function centos {
   fi
 
   echo "Installing package."
-  yum install --quiet -y newrelic-sysmond
+  yum install -y newrelic-sysmond
 
   echo "Configuring package."
   nrsysmond-config --set license_key=$LICENSE > /dev/null
