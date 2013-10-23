@@ -58,10 +58,10 @@ function debian {
   wget --quiet -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
 
   echo "Updating apt database."
-  apt-get -q update
+  apt-get -qq update
 
   echo "Installing package."
-  apt-get -y -q install newrelic-sysmond
+  apt-get -y -q install newrelic-sysmond > /dev/null
 
   echo "Configuring package."
   nrsysmond-config --set license_key=$LICENSE > /dev/null
